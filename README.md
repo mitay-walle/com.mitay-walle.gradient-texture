@@ -1,7 +1,7 @@
 # GradientTexture
 Unity Gradient Texture generator.
 - 1 script-file
-- Create new gradient with ProhectWindow/RMB/Create/GradientTexture
+- Create new gradient with ProjectWindow/RMB/Create/GradientTexture
 - Texture appear as GradientTexture-subasset
 - realtime editing
 - Blend '_horizontalTop' and '_horizontalBottom' Gradients with '_verticalLerp' Gradient.
