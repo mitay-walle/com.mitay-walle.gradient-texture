@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -86,7 +87,7 @@ namespace Packages.GradientTextureGenerator.Runtime
 #if UNITY_2018
                 _texture = new Texture2D(_resolution.x, _resolution.y);
 #else
-                _texture = new Texture2D(_resolution.x, _resolution.y, DefaultFormat.LDR, TextureCreationFlags.None);
+                 _texture = new Texture2D(_resolution.x, _resolution.y, DefaultFormat.LDR, TextureCreationFlags.None);
 #endif
                 if (_texture.name != name) _texture.name = name;
             }

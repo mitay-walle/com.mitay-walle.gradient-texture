@@ -25,18 +25,18 @@ namespace Packages.GradientTextureGenerator.Editor
 
             if (rect.height > 30)
             {
-                rect.position = new Vector2(rect.position.x + rect.height * .1f + rect.width - rect.height, rect.position.y);
-                rect.height *= .87f;
-                rect.width = rect.height - 5;
-                rect.height *= .95f;
+                // rect.position = new Vector2(rect.position.x + rect.height * .1f + rect.width - rect.height, rect.position.y);
+                // rect.height *= .87f;
+                // rect.width = rect.height - 5;
+                // rect.height *= .95f;
             }
             else
             {
-                rect.position = new Vector2(rect.position.x-2 + rect.width - rect.height, rect.position.y);
+                //rect.position = new Vector2(rect.position.x-2 + rect.width - rect.height, rect.position.y);
                 rect.width = rect.height *= .9f;
+                GUI.DrawTexture(rect, asset.GetTexture());
             }
 
-            GUI.DrawTexture(rect, asset.GetTexture());
         }
     }
 }
