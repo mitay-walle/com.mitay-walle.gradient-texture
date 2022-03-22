@@ -1,8 +1,8 @@
+using Packages.GradientTextureGenerator.Runtime;
 using UnityEditor;
 using UnityEngine;
-using Assets.mitaywalle.GradientTextureGenerator.Runtime;
 
-namespace Assets.mitaywalle.GradientTextureGenerator.Editor
+namespace Packages.GradientTextureGenerator.Editor
 {
     [CustomEditor(typeof(GradientTexture), true), CanEditMultipleObjects]
     public class GradientTextureEditor : UnityEditor.Editor
@@ -17,6 +17,8 @@ namespace Assets.mitaywalle.GradientTextureGenerator.Editor
             GradientTexture = target as GradientTexture;
         }
 
+        
+        
         public override void DrawPreview(Rect previewArea)
         {
             Texture2D texture = GradientTexture.GetTexture();

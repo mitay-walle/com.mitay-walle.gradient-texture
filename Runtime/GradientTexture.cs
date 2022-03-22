@@ -1,55 +1,35 @@
 using System;
 using System.Diagnostics;
+using UnityEditor;
 using UnityEngine;
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 
-namespace Assets.mitaywalle.GradientTextureGenerator.Runtime
+namespace Packages.GradientTextureGenerator.Runtime
 {
     [CreateAssetMenu(fileName = "NewGradientName", menuName = "Texture/Gradient")]
     public class GradientTexture : ScriptableObject, IEquatable<Texture2D>, ISerializationCallbackReceiver
     {
         [SerializeField] private Vector2Int _resolution = new Vector2Int(256, 256);
         [Range(0, 1), SerializeField] private float _dithering = default;
+        [SerializeField] private AnimationCurve _verticalLerp = AnimationCurve.Linear(0, 0, 1, 1);
+        [SerializeField, GradientUsage(true)] private Gradient _horizontalTop = GetDefaultGradient();
+        [SerializeField, GradientUsage(true)] private Gradient _horizontalBottom = GetDefaultGradient();
+        [HideInInspector, SerializeField] private Texture2D _texture = default;
 
-
-        [GradientUsage(true), SerializeField] private Gradient _horizontalTop = new Gradient
-        {
-            alphaKeys = new[] {new GradientAlphaKey(1, 1)},
-            colorKeys = new[]
-            {
-                new GradientColorKey(Color.black, 0),
-                new GradientColorKey(Color.white, 1)
-            }
-        };
-
-        [GradientUsage(true), SerializeField] private Gradient _horizontalBottom = new Gradient
-        {
-            alphaKeys = new[] {new GradientAlphaKey(1, 1)},
-            colorKeys = new[]
-            {
-                new GradientColorKey(Color.white, 0)
-            }
-        };
-
-        [SerializeField] private Gradient _verticalLerp = new Gradient
-        {
-            alphaKeys = new[] {new GradientAlphaKey(1, 1)},
-            colorKeys = new[]
-            {
-                new GradientColorKey(Color.black, 0),
-                new GradientColorKey(Color.white, 1)
-            }
-        };
-
-
-        [SerializeField] private Texture2D _texture;
-
-        private int[] _hashes = new int[4];
         public Texture2D GetTexture() => _texture;
         private int _width => _resolution.x;
         private int _height => _resolution.y;
+
+        private static Gradient GetDefaultGradient() => new Gradient
+        {
+            alphaKeys = new[] {new GradientAlphaKey(1, 1)},
+            colorKeys = new[]
+            {
+                new GradientColorKey(Color.black, 0),
+                new GradientColorKey(Color.white, 1)
+            }
+        };
 
         public void FillColors()
         {
@@ -57,7 +37,7 @@ namespace Assets.mitaywalle.GradientTextureGenerator.Runtime
 
             for (int y = 0; y < _height; y++)
             {
-                tVertical = _verticalLerp.Evaluate((float)y / _height).r;
+                tVertical = _verticalLerp.Evaluate((float)y / _height);
 
                 for (int x = 0; x < _width; x++)
                 {
@@ -98,6 +78,14 @@ namespace Assets.mitaywalle.GradientTextureGenerator.Runtime
 
         private void OnValidate()
         {
+            string assetPath = AssetDatabase.GetAssetPath(this);
+
+            if (!_texture && this != null)
+            {
+                AssetDatabase.ImportAsset(assetPath);
+                _texture = AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath);
+            }
+
             if (!_texture)
             {
 #if UNITY_2018
@@ -105,51 +93,48 @@ namespace Assets.mitaywalle.GradientTextureGenerator.Runtime
 #else
                 _texture = new Texture2D(_resolution.x, _resolution.y, DefaultFormat.LDR, TextureCreationFlags.None);
 #endif
-
                 if (_texture.name != name) _texture.name = name;
-#if UNITY_EDITOR
-                if (EditorUtility.IsPersistent(this))
-                {
-                    AssetDatabase.AddObjectToAsset(_texture, this);
-                    AssetDatabase.SaveAssets();
-                    AssetDatabase.Refresh();
-                    AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(this));
-                    _texture = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GetAssetPath(this));
-                }
-#endif
             }
 
-            if (_texture.name != name)
+            if (_texture)
             {
-                _texture.name = name;
-            }
-            else
-            {
-                if (_texture.width != _resolution.x ||
-                    _texture.height != _resolution.y)
+                if (_texture.name != name)
                 {
-                    _texture.Resize(_resolution.x, _resolution.y);
+                    _texture.name = name;
                 }
-
-                _texture.alphaIsTransparency = true;
-
-
-                if (_hashes[0] != _horizontalTop.GetHashCode()
-                    || _hashes[1] != _horizontalBottom.GetHashCode()
-                    || _hashes[2] != _verticalLerp.GetHashCode()
-                    || _hashes[3] != _dithering.GetHashCode()
-                   )
+                else
                 {
-                    _hashes[0] = _horizontalTop.GetHashCode();
-                    _hashes[1] = _horizontalBottom.GetHashCode();
-                    _hashes[2] = _verticalLerp.GetHashCode();
-                    _hashes[3] = _dithering.GetHashCode();
+                    if (_texture.width != _resolution.x ||
+                        _texture.height != _resolution.y)
+                    {
+                        _texture.Resize(_resolution.x, _resolution.y);
+                    }
+
+                    _texture.alphaIsTransparency = true;
 
                     FillColors();
-                }
 
-                SetDirtyTexture();
+                    SetDirtyTexture();
+                }
             }
+
+#if UNITY_EDITOR
+            if (!_texture) return;
+            if (!EditorUtility.IsPersistent(this)) return;
+            if (AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath)) return;
+
+            AssetDatabase.AddObjectToAsset(_texture, this);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceSynchronousImport);
+            AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.Default);
+            AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceUncompressedImport);
+            AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceUpdate);
+            AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ImportRecursive);
+            AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.DontDownloadFromCacheServer);
+
+            AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath);
+#endif
         }
 
         #region Editor
@@ -170,7 +155,7 @@ namespace Assets.mitaywalle.GradientTextureGenerator.Runtime
         public void OnBeforeSerialize()
         {
 #if UNITY_EDITOR
-            if (_texture.name == name) return;
+            if (!_texture || _texture.name == name) return;
 
             _texture.name = name;
             AssetDatabase.SaveAssets();
