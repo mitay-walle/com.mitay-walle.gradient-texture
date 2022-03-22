@@ -17,4 +17,4 @@ If you like my work, you can support me on [Patreon](https://www.patreon.com/mit
 [usage example video ( Youtube )](https://youtu.be/LmBBTqhpsbw)
 
 shader in example based on [this](https://simonschreibt.de/gat/fallout-4-the-mushroom-case/)
-![alt text](https://github.com/mitay-walle/GradientTexture/blob/main/Screenshot_57.png)
+![alt text](https://github.com/mitay-walle/GradientTexture/blob/main/Documentation/Inspector_preview.png?raw=true)
