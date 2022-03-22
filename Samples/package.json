@@ -1,0 +1,9 @@
+{
+    "samples": [
+        {
+            "displayName": "Demo Scene Standard",
+            "description": "Contains sample gradient texture usage in particles ",
+            "path": "Samples~/SamplesStandard"
+        }
+    ]
+}

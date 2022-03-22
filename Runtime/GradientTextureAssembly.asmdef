@@ -1,8 +1,6 @@
 {
-    "name": "PackageEditor",
-    "references": [
-        "PackageName"
-    ],
+    "name": "GradientTextureAssembly",
+    "references": [],
     "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
