@@ -1,6 +1,6 @@
 {
   "name": "com.mitay-walle.gradient-texture",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "displayName": "Gradient Texture",
   "description": "Procedural gradient texture generator",
   "unity": "2018.4",
