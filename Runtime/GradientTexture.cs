@@ -1,8 +1,8 @@
 using System;
 using System.Diagnostics;
-using UnityEditor;
 using UnityEngine;
 #if UNITY_EDITOR
+using UnityEditor;
 #endif
 
 namespace Packages.GradientTextureGenerator.Runtime
@@ -69,11 +69,6 @@ namespace Packages.GradientTextureGenerator.Runtime
         public bool Equals(Texture2D other)
         {
             return _texture.Equals(other);
-        }
-
-        private void Awake()
-        {
-            OnValidate();
         }
 
         private void OnValidate()
@@ -158,7 +153,8 @@ namespace Packages.GradientTextureGenerator.Runtime
             if (!_texture || _texture.name == name) return;
 
             _texture.name = name;
-            AssetDatabase.SaveAssets();
+
+            //AssetDatabase.SaveAssets();
   #endif
         }
     }

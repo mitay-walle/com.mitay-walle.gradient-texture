@@ -29,10 +29,11 @@ namespace Packages.GradientTextureGenerator.Editor
                 _editor = CreateEditor(texture);
             }
 
-            if (_editor)
+            if (_editor && _editor.target)
             {
                 _editor.DrawPreview(previewArea);
             }
         }
     }
 }
+ 
