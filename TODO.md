@@ -1,5 +1,5 @@
 ## Done
-- [x] Unity 2018 Verification
+- [x] Unity 2018 Verification | [Release](https://github.com/mitay-walle/GradientTexture/releases/tag/1.0.1)
 
 ## In Progress
 - [ ] #7 Unity 2019 Verification
