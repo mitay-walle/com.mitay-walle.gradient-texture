@@ -23,27 +23,26 @@ You forced to use Texture2D-based gradients
 While designing VFX using gradients you need to tweak colors and positions, according to vfx timings/size etc, what makes you:
 1. _optional_ pause vfx
 2. _optional_ make screenshot
-3. switch Photoshop or rearrange windows to have both (Photshop and Unity) on screen
-4. change color as is in photoshop or according to screenshot, or according to unity-view
+3. switch Photoshop or rearrange windows to have both (Photoshop and Unity) visible on screen together
+4. tweak Gradient as is in Photoshop or according to screenshot, or according to Unity-view
 5. save file
-6. active Unity window 1-2-3 times for reimport or reimport by hand (if playmode is active?)
+6. switch to Unity window 1-2-3 times to reimport Texture or reimport by hand (if Playmode is active?)
 7. check visual changes
 8. repeat all
 
 # Solution
 Texture2D-Gradient generated dynamicly Editor-time, by ScriptableObject with Gradient-properties
 <br>I. Exposed in shader graph as Texture2D
-<br>II. faster iteration with no need to switch to Photoshop, rearrange windows, save file
+<br>II. faster iteration with no need to switch to Photoshop, rearrange windows, save file, reimport
 
 # Summary
+- RGBA
 - package
-- Create new gradient with ProjectWindow/RMB/Create/Texture/Gradient 
-- Texture itself appear as GradientTexture-subasset
+- create GradientTexture with ProjectWindow/RMB/Create/Texture/Gradient 
+- Texture2D itself appear as GradientTexture-Subasset
 - realtime editing
-- use HDR Gradients
+- uses HDR Gradients
 - Blend 'horizontalTop' and 'horizontalBottom' Gradients with 'verticalLerp' Curve.
-- 'horizontalTop' and '_horizontalBottom' use HDR and has alpha
-- 'verticalLerp' is blend-t-value
 - choose any resolution you want
 
 
