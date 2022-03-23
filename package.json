@@ -4,8 +4,8 @@
   "displayName": "Gradient Texture",
   "description": "Procedural gradient texture generator. <br>To install specific version from GitHub use https://github.com/mob-sakai/UpmGitExtension",
   "unity": "2018.4",
-  "documentationUrl": "https://github.com/mitay-walle/GradientTexture",
-  "licensesUrl": "https://github.com/mitay-walle/GradientTexture/blob/main/LICENSE",
+  "documentationUrl": "https://github.com/mitay-walle/GradientTexture/blob/main/README.md",
+  "licensesUrl": "https://github.com/mitay-walle/GradientTexture/blob/main/LICENSE.md",
   "dependencies": { },
  "keywords": [
     "Texture",
