@@ -90,44 +90,42 @@ namespace Packages.GradientTextureGenerator.Runtime
 #if UNITY_2018
                 _texture = new Texture2D(_resolution.x, _resolution.y);
 #else
-                 _texture = new Texture2D(_resolution.x, _resolution.y, DefaultFormat.LDR, TextureCreationFlags.None);
+                _texture = new Texture2D(_resolution.x, _resolution.y, DefaultFormat.LDR, TextureCreationFlags.None);
 #endif
                 if (_texture.name != name) _texture.name = name;
             }
 
-            if (_texture)
-            {
-                if (_texture.name != name)
-                {
-                    _texture.name = name;
-                }
-                else
-                {
-                    if (_texture.width != _resolution.x ||
-                        _texture.height != _resolution.y)
-                    {
-                        _texture.Resize(_resolution.x, _resolution.y);
-                    }
-
-                    _texture.alphaIsTransparency = true;
-
-                    FillColors();
-
-                    SetDirtyTexture();
-                }
-            }
-
-#if UNITY_EDITOR
             if (!_texture) return;
+
+            if (_texture.name != name)
+            {
+                _texture.name = name;
+            }
+            else
+            {
+                if (_texture.width != _resolution.x ||
+                    _texture.height != _resolution.y)
+                {
+                    _texture.Resize(_resolution.x, _resolution.y);
+                }
+
+                _texture.alphaIsTransparency = true;
+
+                FillColors();
+
+                SetDirtyTexture();
+            }
+            
+#if UNITY_EDITOR
             if (!EditorUtility.IsPersistent(this)) return;
             if (AssetDatabase.IsSubAsset(_texture)) return;
             if (AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath)) return;
 
             AssetDatabase.AddObjectToAsset(_texture, this);
             AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
             AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceSynchronousImport);
             AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath);
+            AssetDatabase.Refresh();
 #endif
         }
 
