@@ -1,5 +1,5 @@
 # GradientTexture
-Unity Gradient Texture generator.
+Unity Gradient Texture generator. Texture2D-Gradient generated dynamicly Editor-time, by ScriptableObject with Gradient-properties
 
 [usage example video ( Youtube )](https://youtu.be/LmBBTqhpsbw)
 
@@ -32,8 +32,8 @@ While designing VFX using gradients you need to tweak colors and positions, acco
 
 # Solution
 Texture2D-Gradient generated dynamicly Editor-time, by ScriptableObject with Gradient-properties
-I. Exposed in shader graph as Texture2D
-II. faster iteration with no need to switch to Photoshop, rearrange windows, save file
+<br>I. Exposed in shader graph as Texture2D
+<br>II. faster iteration with no need to switch to Photoshop, rearrange windows, save file
 
 # Summary
 - package
