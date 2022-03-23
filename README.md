@@ -2,6 +2,7 @@
 Unity Gradient Texture generator. Texture2D-Gradient generated dynamicly Editor-time, by ScriptableObject with Gradient-properties
 
 [usage example video ( Youtube )](https://youtu.be/LmBBTqhpsbw)
+shader in example based on [this](https://simonschreibt.de/gat/fallout-4-the-mushroom-case/), can be downloaded [here](https://github.com/mitay-walle/GradientTexture/issues/6)
 
 # Like it? Buy me a candy
 If you like my work, you can support me on [Patreon](https://www.patreon.com/mitaywalle)
@@ -44,7 +45,3 @@ Texture2D-Gradient generated dynamicly Editor-time, by ScriptableObject with Gra
 - uses HDR Gradients
 - Blend 'horizontalTop' and 'horizontalBottom' Gradients with 'verticalLerp' Curve.
 - choose any resolution you want
-
-
-shader in example based on [this](https://simonschreibt.de/gat/fallout-4-the-mushroom-case/)
-
