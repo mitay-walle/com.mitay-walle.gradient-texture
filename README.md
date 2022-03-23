@@ -5,13 +5,13 @@ Unity Gradient Texture generator.
 If you like my work, you can support me on [Patreon](https://www.patreon.com/mitaywalle)
 
 # Summary
-- 1 script-file
+- package
 - Create new gradient with ProjectWindow/RMB/Create/Texture/Gradient 
 - Texture itself appear as GradientTexture-subasset
 - realtime editing
-- Blend 'horizontalTop' and 'horizontalBottom' Gradients with 'verticalLerp' Gradient.
+- Blend 'horizontalTop' and 'horizontalBottom' Gradients with 'verticalLerp' Curve.
 - 'horizontalTop' and '_horizontalBottom' use HDR and has alpha
-- 'verticalLerp' as blend-t-value
+- 'verticalLerp' is blend-t-value
 - choose any resolution you want
 
 [usage example video ( Youtube )](https://youtu.be/LmBBTqhpsbw)
