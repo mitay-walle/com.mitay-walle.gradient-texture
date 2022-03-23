@@ -120,18 +120,13 @@ namespace Packages.GradientTextureGenerator.Runtime
 #if UNITY_EDITOR
             if (!_texture) return;
             if (!EditorUtility.IsPersistent(this)) return;
+            if (AssetDatabase.IsSubAsset(_texture)) return;
             if (AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath)) return;
 
             AssetDatabase.AddObjectToAsset(_texture, this);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceSynchronousImport);
-            AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.Default);
-            AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceUncompressedImport);
-            AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceUpdate);
-            AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ImportRecursive);
-            AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.DontDownloadFromCacheServer);
-
             AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath);
 #endif
         }

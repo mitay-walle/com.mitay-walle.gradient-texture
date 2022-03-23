@@ -1,3 +1,4 @@
+using System.Reflection;
 using Packages.GradientTextureGenerator.Runtime;
 using UnityEditor;
 using UnityEngine;
@@ -15,12 +16,6 @@ namespace Packages.GradientTextureGenerator.Editor
         private void OnEnable()
         {
             GradientTexture = target as GradientTexture;
-        }
-
-        
-        
-        public override void DrawPreview(Rect previewArea)
-        {
             Texture2D texture = GradientTexture.GetTexture();
             bool check = !_editor || _editor.target != texture;
 
@@ -28,12 +23,23 @@ namespace Packages.GradientTextureGenerator.Editor
             {
                 _editor = CreateEditor(texture);
             }
+        }
 
+
+        public override void DrawPreview(Rect previewArea)
+        {
             if (_editor && _editor.target)
             {
                 _editor.DrawPreview(previewArea);
             }
         }
+
+        private void OnDisable()
+        {
+            if (_editor)
+            {
+                _editor.GetType().GetMethod("OnDisable", BindingFlags.NonPublic)?.Invoke(_editor, null);
+            }
+        }
     }
 }
- 
