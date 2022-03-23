@@ -2,10 +2,10 @@
   "name": "com.mitay-walle.gradient-texture",
   "version": "1.0.1",
   "displayName": "Gradient Texture",
-  "description": "Procedural gradient texture generator",
+  "description": "Procedural gradient texture generator. <br>To install specific version from GitHub use https://github.com/mob-sakai/UpmGitExtension",
   "unity": "2018.4",
   "documentationUrl": "https://github.com/mitay-walle/GradientTexture",
-  "licensesUrl": "https://github.com/mitay-walle/Transform_stuff/blob/master/LICENSE",
+  "licensesUrl": "https://github.com/mitay-walle/GradientTexture/blob/main/LICENSE",
   "dependencies": { },
  "keywords": [
     "Texture",
@@ -14,7 +14,7 @@
   ],
   "author": {
     "name": "mitay-walle",
-    "email": "mitay-walle@mail.ru",
+    "email": "mitay-walle91@mail.ru",
     "url": "https://github.com/mitay-walle"
   }
 }
