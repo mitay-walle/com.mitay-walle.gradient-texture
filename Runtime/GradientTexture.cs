@@ -8,6 +8,9 @@ using UnityEditor;
 
 namespace Packages.GradientTextureGenerator.Runtime
 {
+    /// <summary>
+    /// Main Asset, holds settings, create, hold and change Texture2D's pixels, name
+    /// </summary>
     [CreateAssetMenu(fileName = "NewGradientName", menuName = "Texture/Gradient")]
     public class GradientTexture : ScriptableObject, IEquatable<Texture2D>, ISerializationCallbackReceiver
     {
