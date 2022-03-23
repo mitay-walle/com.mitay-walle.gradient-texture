@@ -8,8 +8,13 @@ Unity Gradient Texture generator.
 # Problem
 
 ## I. Shader Graph no Exposed Gradient
-[You can't expose gradient to material inspector.](https://forum.unity.com/threads/where-is-the-exposed-gradient-node-property-in-shadergraph.822975/) 
+[You can't expose gradient to material inspector](https://issuetracker.unity3d.com/issues/gradient-property-cant-be-exposed-from-the-shadergraph)
+
 You forced to use Texture2D-based gradients
+
+[Forum last active thread](https://forum.unity.com/threads/gradients-exposed-property-is-ignored.837970/)
+
+
 
 ## II. designing VFX with gradients
 While designing VFX using gradients you need to tweak colors and positions, according to vfx timings/size etc, what makes you:
