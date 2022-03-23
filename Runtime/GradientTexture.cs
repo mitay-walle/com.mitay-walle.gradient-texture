@@ -106,7 +106,11 @@ namespace Packages.GradientTextureGenerator.Runtime
                 if (_texture.width != _resolution.x ||
                     _texture.height != _resolution.y)
                 {
+#if UNITY_2022_1_OR_NEWER
+                    _texture.Reinitialize(_resolution.x, _resolution.y);
+#else
                     _texture.Resize(_resolution.x, _resolution.y);
+#endif
                 }
 
                 _texture.alphaIsTransparency = true;
