@@ -36,6 +36,7 @@ If you like my work, you can support me on [Patreon](https://www.patreon.com/mit
 - Create new gradient with ProjectWindow/RMB/Create/Texture/Gradient 
 - Texture itself appear as GradientTexture-subasset
 - realtime editing
+- use HDR Gradients
 - Blend 'horizontalTop' and 'horizontalBottom' Gradients with 'verticalLerp' Curve.
 - 'horizontalTop' and '_horizontalBottom' use HDR and has alpha
 - 'verticalLerp' is blend-t-value
