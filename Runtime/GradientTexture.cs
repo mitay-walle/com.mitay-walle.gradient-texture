@@ -125,7 +125,9 @@ namespace Packages.GradientTextureGenerator.Runtime
             if (AssetDatabase.IsSubAsset(_texture)) return;
             if (AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath)) return;
 
+            #if UNITY_2020_1_OR_NEWER
             if (AssetDatabase.IsAssetImportWorkerProcess()) return;
+            #endif
             AssetDatabase.AddObjectToAsset(_texture, this);
             AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceUpdate);
             //AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath);
