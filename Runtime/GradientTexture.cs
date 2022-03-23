@@ -121,11 +121,11 @@ namespace Packages.GradientTextureGenerator.Runtime
             if (AssetDatabase.IsSubAsset(_texture)) return;
             if (AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath)) return;
 
+            if (AssetDatabase.IsAssetImportWorkerProcess()) return;
             AssetDatabase.AddObjectToAsset(_texture, this);
-            AssetDatabase.SaveAssets();
-            AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceSynchronousImport);
-            AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath);
-            AssetDatabase.Refresh();
+            AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceUpdate);
+            //AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath);
+            //AssetDatabase.Refresh();
 #endif
         }
 
