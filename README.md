@@ -3,6 +3,9 @@ Unity Gradient Texture generator.
 
 [usage example video ( Youtube )](https://youtu.be/LmBBTqhpsbw)
 
+# Like it? Buy me a candy
+If you like my work, you can support me on [Patreon](https://www.patreon.com/mitaywalle)
+
 ![alt text](https://github.com/mitay-walle/GradientTexture/blob/main/Documentation/Inspector_preview.png?raw=true)
 
 # Problem
@@ -28,13 +31,9 @@ While designing VFX using gradients you need to tweak colors and positions, acco
 8. repeat all
 
 # Solution
-Texture2D generated dynamicly Editor-time, by ScriptableObject with Gradient-properties
-
-
-
-
-# Like it? Buy me a candy
-If you like my work, you can support me on [Patreon](https://www.patreon.com/mitaywalle)
+Texture2D-Gradient generated dynamicly Editor-time, by ScriptableObject with Gradient-properties
+I. Exposed in shader graph as Texture2D
+II. faster iteration with no need to switch to Photoshop, rearrange windows, save file
 
 # Summary
 - package
