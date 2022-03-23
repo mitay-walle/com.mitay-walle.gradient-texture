@@ -4,9 +4,6 @@ Unity Gradient Texture generator. Texture2D-Gradient generated dynamicly Editor-
 [usage example video ( Youtube )](https://youtu.be/LmBBTqhpsbw)
 <br>shader in example based on [this](https://simonschreibt.de/gat/fallout-4-the-mushroom-case/), can be downloaded [here](https://github.com/mitay-walle/GradientTexture/issues/6)
 
-# Like it? Buy me a candy
-If you like my work, you can support me on [Patreon](https://www.patreon.com/mitaywalle)
-
 ![alt text](https://github.com/mitay-walle/GradientTexture/blob/main/Documentation/Inspector_preview.png?raw=true)
 
 # Problem
