@@ -34,7 +34,7 @@ Texture2D-Gradient generated dynamicly Editor-time, by ScriptableObject with Gra
 <br>II. faster iteration with no need to switch to Photoshop, rearrange windows, save file, reimport
 
 # Summary
-- [last release 1.0.5](https://github.com/mitay-walle/GradientTexture/releases/tag/1.0.5) is tested with Unity3d 2018-2022
+- [last release 1.0.6](https://github.com/mitay-walle/GradientTexture/releases/tag/1.0.6) is tested with Unity3d 2018-2022
 - RGBA
 - package
 - create GradientTexture with ProjectWindow/RMB/Create/Texture/Gradient 
