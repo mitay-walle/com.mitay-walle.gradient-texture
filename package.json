@@ -1,6 +1,6 @@
 {
   "name": "com.mitay-walle.gradient-texture",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "displayName": "Gradient Texture",
   "description": "Unity Procedural gradient texture generator \n\nTexture2D-Gradient generated dynamicly at Editor-time, by ScriptableObject with Gradient-properties",
   "unity": "2018.4",
