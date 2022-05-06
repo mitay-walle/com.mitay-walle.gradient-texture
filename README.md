@@ -36,7 +36,7 @@ Texture2D-Gradient generated dynamicly Editor-time, by ScriptableObject with Gra
 - RGBA
 - HDR
 - UPM package
-- Export to PNG
+- [release 1.0.7](https://github.com/mitay-walle/GradientTexture/releases/tag/1.0.7) Export to PNG
 - create GradientTexture with ProjectWindow/RMB/Create/Texture/Gradient 
 - Texture2D itself appear as GradientTexture-Subasset
 - realtime editing
