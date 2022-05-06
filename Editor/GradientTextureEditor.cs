@@ -36,7 +36,7 @@ namespace Packages.GradientTextureGenerator.Editor
 
 				int length = "Assets".Length;
 				string dataPath = Application.dataPath;
-				dataPath = dataPath.Remove(dataPath.Length - length,length);
+				dataPath = dataPath.Remove(dataPath.Length - length, length);
 				dataPath += path;
 				File.WriteAllBytes(dataPath, bytes);
 
@@ -67,6 +67,13 @@ namespace Packages.GradientTextureGenerator.Editor
 			}
 		}
 
+		public override Texture2D RenderStaticPreview(string assetPath, Object[] subAssets, int width, int height)
+		{
+			Texture2D tex = new Texture2D (width, height);
+			EditorUtility.CopySerialized (GradientTexture.GetTexture(), tex);
+			return tex;
+		}
+
 		private void OnDisable()
 		{
 			if (_editor)
@@ -75,4 +82,5 @@ namespace Packages.GradientTextureGenerator.Editor
 			}
 		}
 	}
+
 }

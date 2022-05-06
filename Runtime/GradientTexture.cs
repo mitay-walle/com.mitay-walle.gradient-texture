@@ -15,7 +15,6 @@ namespace Packages.GradientTextureGenerator.Runtime
     public class GradientTexture : ScriptableObject, IEquatable<Texture2D>, ISerializationCallbackReceiver
     {
         [SerializeField] private Vector2Int _resolution = new Vector2Int(256, 256);
-        [Range(0, 1), SerializeField] private float _dithering = default;
         [SerializeField] private AnimationCurve _verticalLerp = AnimationCurve.Linear(0, 0, 1, 1);
         [SerializeField, GradientUsage(true)] private Gradient _horizontalTop = GetDefaultGradient();
         [SerializeField, GradientUsage(true)] private Gradient _horizontalBottom = GetDefaultGradient();
@@ -25,6 +24,8 @@ namespace Packages.GradientTextureGenerator.Runtime
         private int _width => _resolution.x;
         private int _height => _resolution.y;
 
+        public static implicit operator Texture2D(GradientTexture asset) => asset.GetTexture();
+        
         private static Gradient GetDefaultGradient() => new Gradient
         {
             alphaKeys = new[] {new GradientAlphaKey(1, 1)},
@@ -49,19 +50,6 @@ namespace Packages.GradientTextureGenerator.Runtime
 
                     Color col = Color.Lerp(_horizontalBottom.Evaluate(tHorizontal),
                                            _horizontalTop.Evaluate(tHorizontal), tVertical);
-
-                    if (_dithering > 0)
-                    {
-                        bool dither1 = x % 2 == 0 && y % 2 != 0;
-                        bool dither2 = x % 2 != 0 && y % 2 == 0;
-
-                        if (dither1 || dither2)
-                        {
-                            col.r *= 1 - _dithering;
-                            col.g *= 1 - _dithering;
-                            col.b *= 1 - _dithering;
-                        }
-                    }
 
                     _texture.SetPixel(x, y, col);
                 }
