@@ -15,8 +15,6 @@ You forced to use Texture2D-based gradients
 
 [Forum last active thread](https://forum.unity.com/threads/gradients-exposed-property-is-ignored.837970/)
 
-
-
 ## II. designing VFX with gradients
 While designing VFX using gradients you need to tweak colors and positions, according to vfx timings/size etc, what makes you:
 1. _optional_ pause vfx
@@ -36,10 +34,11 @@ Texture2D-Gradient generated dynamicly Editor-time, by ScriptableObject with Gra
 # Summary
 - [last release 1.0.6](https://github.com/mitay-walle/GradientTexture/releases/tag/1.0.6) is tested with Unity3d 2018-2022
 - RGBA
-- package
+- HDR
+- UPM package
+- Export to PNG
 - create GradientTexture with ProjectWindow/RMB/Create/Texture/Gradient 
 - Texture2D itself appear as GradientTexture-Subasset
 - realtime editing
-- uses HDR Gradients
 - Blend 'horizontalTop' and 'horizontalBottom' Gradients with 'verticalLerp' Curve.
 - choose any resolution you want
