@@ -7,7 +7,7 @@ Unity Gradient Texture generator. Texture2D-Gradient generated dynamicly Editor-
 ![alt text](https://github.com/mitay-walle/GradientTexture/blob/main/Documentation/Inspector_preview.png?raw=true)
 
 What's new:
-- drag and drop as simple texture
+- drag and drop as simple texture (Unity 2021.2 minimum)
 - Encode to PNG
 - stackable preview
 
