@@ -6,22 +6,29 @@
   "unity": "2018.4",
   "documentationUrl": "https://github.com/mitay-walle/GradientTexture/blob/main/README.md",
   "licensesUrl": "https://github.com/mitay-walle/GradientTexture/blob/main/LICENSE.md",
-  "dependencies": { },
- "keywords": [
+  "keywords": [
     "Texture",
     "Procedural",
     "Gradient"
   ],
-  "author": {
-    "name": "mitay-walle",
-    "email": "mitay-walle91@mail.ru",
-    "url": "https://github.com/mitay-walle"
-  },
+  "author": "mitay-walle <mitay-walle91@mail.ru> (https://github.com/mitay-walle)",
   "samples": [
     {
       "displayName": "Example Gradients",
       "description": "Contains couple of gradient texture assets with different setup",
       "path": "Samples/SamplesGradientTexture"
     }
-  ]
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mitay-walle/GradientTexture.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mitay-walle/GradientTexture/issues"
+  },
+  "homepage": "https://github.com/mitay-walle/GradientTexture#readme",
+  "license": "MIT"
 }
