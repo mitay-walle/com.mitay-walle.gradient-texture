@@ -50,5 +50,5 @@ Texture2D-Gradient generated dynamicly Editor-time, by ScriptableObject with Gra
 - Blend 'horizontalTop' and 'horizontalBottom' Gradients with 'verticalLerp' Curve.
 - choose any resolution you want
 - drag and drop as simple texture
-- Encode to PNG
+- Encode to PNG for better compression and full control at import settings
 - stackable preview
