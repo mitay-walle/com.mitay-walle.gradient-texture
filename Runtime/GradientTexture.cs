@@ -65,6 +65,7 @@ namespace Packages.GradientTextureGenerator.Runtime
 
         private void OnValidate()
         {
+#if UNITY_EDITOR
             string assetPath = AssetDatabase.GetAssetPath(this);
 
             if (!_texture && this != null)
@@ -108,7 +109,6 @@ namespace Packages.GradientTextureGenerator.Runtime
                 SetDirtyTexture();
             }
             
-#if UNITY_EDITOR
             if (!EditorUtility.IsPersistent(this)) return;
             if (AssetDatabase.IsSubAsset(_texture)) return;
             if (AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath)) return;
@@ -118,8 +118,6 @@ namespace Packages.GradientTextureGenerator.Runtime
             #endif
             AssetDatabase.AddObjectToAsset(_texture, this);
             AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceUpdate);
-            //AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath);
-            //AssetDatabase.Refresh();
 #endif
         }
 
