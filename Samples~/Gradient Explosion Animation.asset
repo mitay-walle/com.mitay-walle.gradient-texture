@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Gradient Explosion Animation
   m_EditorClassIdentifier: 
   _resolution: {x: 512, y: 512}
+  _sRGB: 0
   _verticalLerp:
     serializedVersion: 2
     m_Curve:

@@ -15,12 +15,21 @@ namespace Packages.GradientTextureGenerator.Runtime
     public class GradientTexture : ScriptableObject, IEquatable<Texture2D>, ISerializationCallbackReceiver
     {
         [SerializeField] private Vector2Int _resolution = new Vector2Int(256, 256);
+        [SerializeField] private bool _sRGB = true;
         [SerializeField] private AnimationCurve _verticalLerp = AnimationCurve.Linear(0, 0, 1, 1);
         [SerializeField, GradientUsage(true)] private Gradient _horizontalTop = GetDefaultGradient();
         [SerializeField, GradientUsage(true)] private Gradient _horizontalBottom = GetDefaultGradient();
         [HideInInspector, SerializeField] private Texture2D _texture = default;
 
         public Texture2D GetTexture() => _texture;
+
+        public bool GetSRGB() => _sRGB;
+        public void SetSRGB(bool value)
+        {
+            _sRGB = value;
+            OnValidate();
+        }
+
         private int _width => _resolution.x;
         private int _height => _resolution.y;
 
@@ -36,8 +45,10 @@ namespace Packages.GradientTextureGenerator.Runtime
             }
         };
 
-        public void FillColors()
+        public void FillColors(bool useRGB)
         {
+            bool isLinear = QualitySettings.activeColorSpace == ColorSpace.Linear;
+            
             float tVertical = 0;
 
             for (int y = 0; y < _height; y++)
@@ -48,10 +59,11 @@ namespace Packages.GradientTextureGenerator.Runtime
                 {
                     float tHorizontal = (float)x / _width;
 
-                    Color col = Color.Lerp(_horizontalBottom.Evaluate(tHorizontal),
+                    Color color = Color.Lerp(_horizontalBottom.Evaluate(tHorizontal),
                                            _horizontalTop.Evaluate(tHorizontal), tVertical);
 
-                    _texture.SetPixel(x, y, col);
+                    color = useRGB && isLinear ? color.linear : color;
+                    _texture.SetPixel(x, y, color);
                 }
             }
 
@@ -104,7 +116,7 @@ namespace Packages.GradientTextureGenerator.Runtime
 
                 _texture.alphaIsTransparency = true;
 
-                FillColors();
+                FillColors(_sRGB);
 
                 SetDirtyTexture();
             }

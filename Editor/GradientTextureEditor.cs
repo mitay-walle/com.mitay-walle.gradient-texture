@@ -7,118 +7,136 @@ using UnityEngine;
 
 namespace Packages.GradientTextureGenerator.Editor
 {
-	[CustomEditor(typeof(GradientTexture), true), CanEditMultipleObjects]
-	public class GradientTextureEditor : UnityEditor.Editor
-	{
-		private GradientTexture GradientTexture;
-		private UnityEditor.Editor _editor;
+    [CustomEditor(typeof(GradientTexture), true), CanEditMultipleObjects]
+    public class GradientTextureEditor : UnityEditor.Editor
+    {
+        private GradientTexture GradientTexture;
+        private UnityEditor.Editor _editor;
 
-		public override bool HasPreviewGUI() => true;
+        public override bool HasPreviewGUI() => true;
 
-		private void OnEnable()
-		{
-			GradientTexture = target as GradientTexture;
-		}
+        private void OnEnable()
+        {
+            GradientTexture = target as GradientTexture;
+        }
 
-		public override void OnInspectorGUI()
-		{
-			base.OnInspectorGUI();
-			if (GUILayout.Button("Encode to PNG"))
-			{
-				foreach (Object target in targets)
-				{
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
 
-					string path = EditorUtility.SaveFilePanelInProject("Save file", $"{GradientTexture.name}_baked", "png", "Choose path to save file");
+            string buttonText = "Encode to PNG" + (targets.Length > 1 ? $" ({targets.Length})" : "");
 
-					if (string.IsNullOrEmpty(path))
-					{
-						Debug.LogError("[ GradientTextureEditor ] EncodeToPNG() save path is empty! canceled", GradientTexture);
-						return;
-					}
+            if (GUILayout.Button(buttonText))
+            {
+                foreach (Object target in targets)
+                {
+                    GradientTexture targetTexture = target as GradientTexture;
 
-					byte[] bytes = ImageConversion.EncodeToPNG(GradientTexture.GetTexture());
+                    string path = EditorUtility.SaveFilePanelInProject("Save file",
+                        $"{targetTexture.name}_baked",
+                        "png",
+                        "Choose path to save file");
 
-					int length = "Assets".Length;
-					string dataPath = Application.dataPath;
-					dataPath = dataPath.Remove(dataPath.Length - length, length);
-					dataPath += path;
-					File.WriteAllBytes(dataPath, bytes);
+                    if (string.IsNullOrEmpty(path))
+                    {
+                        Debug.LogError("[ GradientTextureEditor ] EncodeToPNG() save path is empty! canceled",
+                            targetTexture);
 
-					AssetDatabase.SaveAssets();
-					AssetDatabase.Refresh();
-					AssetDatabase.ImportAsset(path);
-					Texture2D image = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+                        return;
+                    }
 
-					Debug.Log($"[ GradientTextureEditor ] EncodeToPNG() Success! png-gradient saved at '{path}'", image);
-					EditorGUIUtility.PingObject(image);
-					Selection.activeObject = image;
-				}
-			}
-		}
+                    bool wasSRGB = targetTexture.GetSRGB();
+                    if (wasSRGB) targetTexture.SetSRGB(false);
+                    byte[] bytes = ImageConversion.EncodeToPNG(targetTexture.GetTexture());
+                    targetTexture.SetSRGB(wasSRGB);
 
-		public override void DrawPreview(Rect previewArea)
-		{
-			Texture2D texture = GradientTexture.GetTexture();
-			bool check = !_editor || _editor.target != texture;
+                    int length = "Assets".Length;
+                    string dataPath = Application.dataPath;
+                    dataPath = dataPath.Remove(dataPath.Length - length, length);
+                    dataPath += path;
+                    File.WriteAllBytes(dataPath, bytes);
 
-			if (check && texture && (_editor == null || _editor.target != texture))
-			{
-				_editor = CreateEditor(targets.Select(t => (t as GradientTexture)?.GetTexture()).ToArray());
-			}
+                    AssetDatabase.SaveAssets();
+                    AssetDatabase.Refresh();
+                    AssetDatabase.ImportAsset(path);
+                    Texture2D image = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
 
-			if (_editor && _editor.target)
-			{
-				_editor.DrawPreview(previewArea);
-			}
-		}
+                    TextureImporter importer = (TextureImporter) AssetImporter.GetAtPath(path);
+                    importer.sRGBTexture = targetTexture.GetSRGB();
+                    importer.SaveAndReimport();
+                    AssetDatabase.SaveAssets();
+                    AssetDatabase.Refresh();
+                    
+                    Debug.Log($"[ GradientTextureEditor ] EncodeToPNG() Success! png-gradient saved at '{path}'",
+                        image);
 
-		public override void OnPreviewSettings()
-		{
-			if (_editor && _editor.target)
-			{
-				_editor.OnPreviewSettings();
-			}
-		}
+                    EditorGUIUtility.PingObject(image);
+                    Selection.activeObject = image;
+                }
+            }
+        }
 
-		public override void ReloadPreviewInstances()
-		{
-			if (_editor && _editor.target)
-			{
-				_editor.ReloadPreviewInstances();
-			}
-		}
+        public override void DrawPreview(Rect previewArea)
+        {
+            Texture2D texture = GradientTexture.GetTexture();
+            bool check = !_editor || _editor.target != texture;
 
+            if (check && texture && (_editor == null || _editor.target != texture))
+            {
+                _editor = CreateEditor(targets.Select(t => (t as GradientTexture)?.GetTexture()).ToArray());
+            }
 
-		public override void OnInteractivePreviewGUI(Rect r, GUIStyle background)
-		{
-			if (_editor && _editor.target)
-			{
-				_editor.OnInteractivePreviewGUI(r, background);
-			}
-		}
-		public override void OnPreviewGUI(Rect r, GUIStyle background)
-		{
-			if (_editor && _editor.target)
-			{
-				_editor.OnPreviewGUI(r, background);
-			}
-		}
+            if (_editor && _editor.target)
+            {
+                _editor.DrawPreview(previewArea);
+            }
+        }
 
+        public override void OnPreviewSettings()
+        {
+            if (_editor && _editor.target)
+            {
+                _editor.OnPreviewSettings();
+            }
+        }
 
-		public override Texture2D RenderStaticPreview(string assetPath, Object[] subAssets, int width, int height)
-		{
-			Texture2D tex = new Texture2D(width, height);
-			EditorUtility.CopySerialized(GradientTexture.GetTexture(), tex);
-			return tex;
-		}
+        public override void ReloadPreviewInstances()
+        {
+            if (_editor && _editor.target)
+            {
+                _editor.ReloadPreviewInstances();
+            }
+        }
 
-		private void OnDisable()
-		{
-			if (_editor)
-			{
-				_editor.GetType().GetMethod("OnDisable", BindingFlags.NonPublic)?.Invoke(_editor, null);
-			}
-		}
-	}
+        public override void OnInteractivePreviewGUI(Rect r, GUIStyle background)
+        {
+            if (_editor && _editor.target)
+            {
+                _editor.OnInteractivePreviewGUI(r, background);
+            }
+        }
 
+        public override void OnPreviewGUI(Rect r, GUIStyle background)
+        {
+            if (_editor && _editor.target)
+            {
+                _editor.OnPreviewGUI(r, background);
+            }
+        }
+
+        public override Texture2D RenderStaticPreview(string assetPath, Object[] subAssets, int width, int height)
+        {
+            Texture2D tex = new Texture2D(width, height);
+            EditorUtility.CopySerialized(GradientTexture.GetTexture(), tex);
+            return tex;
+        }
+
+        private void OnDisable()
+        {
+            if (_editor)
+            {
+                _editor.GetType().GetMethod("OnDisable", BindingFlags.NonPublic)?.Invoke(_editor, null);
+            }
+        }
+    }
 }

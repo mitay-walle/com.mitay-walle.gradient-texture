@@ -16,7 +16,7 @@
     {
       "displayName": "Example Gradients",
       "description": "Contains couple of gradient texture assets with different setup",
-      "path": "Samples/SamplesGradientTexture"
+      "path": "Samples~"
     }
   ],
   "publishConfig": {

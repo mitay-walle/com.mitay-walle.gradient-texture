@@ -1,7 +1,9 @@
 {
     "name": "GradientTextureEditorAssembly",
     "references": [
-        "GradientTextureAssembly"
+        "GradientTextureAssembly",
+        "UnityEditor.UI",
+        "UnityEngine.UI"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
