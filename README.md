@@ -54,3 +54,4 @@ Texture2D-Gradient generated dynamicly Editor-time, by ScriptableObject with Gra
 - drag and drop as simple texture
 - Encode to PNG for better compression and full control at import settings
 - stackable preview
+- sRGB / Linear flag
