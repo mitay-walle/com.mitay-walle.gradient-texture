@@ -8,36 +8,47 @@ using UnityEditor;
 
 namespace Packages.GradientTextureGenerator.Runtime
 {
+    public interface IGradientTextureForEditor
+    {
+        void CreateTexture();
+
+        Texture2D GetTexture();
+
+        void LoadExisitingTexture();
+    }
+
     /// <summary>
     /// Main Asset, holds settings, create, hold and change Texture2D's pixels, name
     /// </summary>
     [CreateAssetMenu(fileName = "NewGradientName", menuName = "Texture/Gradient")]
-    public class GradientTexture : ScriptableObject, IEquatable<Texture2D>, ISerializationCallbackReceiver
+    public class GradientTexture : ScriptableObject, IEquatable<Texture2D>, ISerializationCallbackReceiver,
+        IGradientTextureForEditor
     {
-        [SerializeField] private Vector2Int _resolution = new Vector2Int(256, 256);
-        [SerializeField] private bool _sRGB = true;
-        [SerializeField] private AnimationCurve _verticalLerp = AnimationCurve.Linear(0, 0, 1, 1);
-        [SerializeField, GradientUsage(true)] private Gradient _horizontalTop = GetDefaultGradient();
-        [SerializeField, GradientUsage(true)] private Gradient _horizontalBottom = GetDefaultGradient();
-        [HideInInspector, SerializeField] private Texture2D _texture = default;
+        [SerializeField] Vector2Int _resolution = new Vector2Int(256, 256);
+        [SerializeField] bool _sRGB = true;
+        [SerializeField] AnimationCurve _verticalLerp = AnimationCurve.Linear(0, 0, 1, 1);
+        [SerializeField, GradientUsage(true)] Gradient _horizontalTop = GetDefaultGradient();
+        [SerializeField, GradientUsage(true)] Gradient _horizontalBottom = GetDefaultGradient();
+        [SerializeField, HideInInspector] Texture2D _texture = default;
 
         public Texture2D GetTexture() => _texture;
 
         public bool GetSRGB() => _sRGB;
+
         public void SetSRGB(bool value)
         {
             _sRGB = value;
             OnValidate();
         }
 
-        private int _width => _resolution.x;
-        private int _height => _resolution.y;
+        int _width => _resolution.x;
+        int _height => _resolution.y;
 
         public static implicit operator Texture2D(GradientTexture asset) => asset.GetTexture();
-        
-        private static Gradient GetDefaultGradient() => new Gradient
+
+        static Gradient GetDefaultGradient() => new Gradient
         {
-            alphaKeys = new[] {new GradientAlphaKey(1, 1)},
+            alphaKeys = new[] { new GradientAlphaKey(1, 1) },
             colorKeys = new[]
             {
                 new GradientColorKey(Color.black, 0),
@@ -48,19 +59,20 @@ namespace Packages.GradientTextureGenerator.Runtime
         public void FillColors(bool useRGB)
         {
             bool isLinear = QualitySettings.activeColorSpace == ColorSpace.Linear;
-            
+
             float tVertical = 0;
 
             for (int y = 0; y < _height; y++)
             {
-                tVertical = _verticalLerp.Evaluate((float)y / _height);
+                tVertical = _verticalLerp.Evaluate((float) y / _height);
 
                 for (int x = 0; x < _width; x++)
                 {
-                    float tHorizontal = (float)x / _width;
+                    float tHorizontal = (float) x / _width;
 
                     Color color = Color.Lerp(_horizontalBottom.Evaluate(tHorizontal),
-                                           _horizontalTop.Evaluate(tHorizontal), tVertical);
+                        _horizontalTop.Evaluate(tHorizontal),
+                        tVertical);
 
                     color = useRGB && isLinear ? color.linear : color;
                     _texture.SetPixel(x, y, color);
@@ -75,12 +87,28 @@ namespace Packages.GradientTextureGenerator.Runtime
             return _texture.Equals(other);
         }
 
-        private void OnValidate()
-        {
-#if UNITY_EDITOR
-            string assetPath = AssetDatabase.GetAssetPath(this);
+        void OnValidate() => ValidateTextureValues();
 
-            if (!_texture && this != null)
+        void IGradientTextureForEditor.LoadExisitingTexture()
+        {
+            #if UNITY_EDITOR
+            if (!_texture)
+            {
+                string assetPath = AssetDatabase.GetAssetPath(this);
+                _texture = AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath);
+            }
+            #endif
+        }
+
+        void IGradientTextureForEditor.CreateTexture()
+        {
+            #if UNITY_EDITOR
+            //if (EditorApplication.isUpdating) return;
+
+            string assetPath = AssetDatabase.GetAssetPath(this);
+            if (string.IsNullOrEmpty(assetPath)) return;
+
+            if (!_texture && this != null && !EditorApplication.isUpdating)
             {
                 AssetDatabase.ImportAsset(assetPath);
                 _texture = AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath);
@@ -98,6 +126,25 @@ namespace Packages.GradientTextureGenerator.Runtime
 
             if (!_texture) return;
 
+            ValidateTextureValues();
+
+            if (!EditorUtility.IsPersistent(this)) return;
+            if (AssetDatabase.IsSubAsset(_texture)) return;
+            if (AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath)) return;
+
+            #if UNITY_2020_1_OR_NEWER
+            if (AssetDatabase.IsAssetImportWorkerProcess()) return;
+            #endif
+            AssetDatabase.AddObjectToAsset(_texture, this);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceUpdate);
+#endif
+        }
+
+        void ValidateTextureValues()
+        {
+            if (!_texture) return;
             if (_texture.name != name)
             {
                 _texture.name = name;
@@ -120,23 +167,12 @@ namespace Packages.GradientTextureGenerator.Runtime
 
                 SetDirtyTexture();
             }
-            
-            if (!EditorUtility.IsPersistent(this)) return;
-            if (AssetDatabase.IsSubAsset(_texture)) return;
-            if (AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath)) return;
-
-            #if UNITY_2020_1_OR_NEWER
-            if (AssetDatabase.IsAssetImportWorkerProcess()) return;
-            #endif
-            AssetDatabase.AddObjectToAsset(_texture, this);
-            AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceUpdate);
-#endif
         }
 
         #region Editor
 
         [Conditional("UNITY_EDITOR")]
-        private void SetDirtyTexture()
+        void SetDirtyTexture()
         {
 #if UNITY_EDITOR
             if (!_texture) return;
@@ -147,7 +183,10 @@ namespace Packages.GradientTextureGenerator.Runtime
 
         #endregion
 
-        public void OnAfterDeserialize() { }
+        public void OnAfterDeserialize()
+        {
+        }
+
         public void OnBeforeSerialize()
         {
 #if UNITY_EDITOR
