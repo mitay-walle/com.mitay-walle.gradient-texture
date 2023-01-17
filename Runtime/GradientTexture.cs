@@ -161,8 +161,9 @@ namespace Packages.GradientTextureGenerator.Runtime
 #endif
                 }
 
+#if UNITY_EDITOR
                 _texture.alphaIsTransparency = true;
-
+#endif
                 FillColors(_sRGB);
 
                 SetDirtyTexture();
