@@ -27,8 +27,8 @@ namespace Packages.GradientTextureGenerator.Runtime
         [SerializeField] Vector2Int _resolution = new Vector2Int(256, 256);
         [SerializeField] bool _sRGB = true;
         [SerializeField] AnimationCurve _verticalLerp = AnimationCurve.Linear(0, 0, 1, 1);
-        [SerializeField, GradientUsage(true)] Gradient _horizontalTop = GetDefaultGradient();
-        [SerializeField, GradientUsage(true)] Gradient _horizontalBottom = GetDefaultGradient();
+        [SerializeField] Gradient _horizontalTop = GetDefaultGradient();
+        [SerializeField] Gradient _horizontalBottom = GetDefaultGradient();
         [SerializeField, HideInInspector] Texture2D _texture = default;
 
         public Texture2D GetTexture() => _texture;
