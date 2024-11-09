@@ -1,3 +1,6 @@
+# Abondoned
+use [ProceduralTexture](https://github.com/mitay-walle/ProceduralTexture) instaed
+
 # GradientTexture
 Unity Gradient Texture generator. Texture2D-Gradient generated dynamicly Editor-time, by ScriptableObject with Gradient-properties
 
